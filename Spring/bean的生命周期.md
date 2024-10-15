@@ -2,7 +2,7 @@
 
 嗯！，这个步骤还是挺多的，我之前看过一些源码，它大概流程是这样的。
 
-首先会通过一个非常重要的类，叫做BeanDefinition获取bean的定义信息，这里面就封装了bean的所有信息，比如，类的全路径，是否是延迟加载，是否是单例等等这些信息。
+首先Spring容器在进行实例化时，会将xml配置的<bean>的信息封装成一个BeanDefinition对象，Spring根据BeanDefinition来创建Bean对象，里面有很多的属性用来描述Bean叫做BeanDefinition获取bean的定义信息，这里面就封装了bean的所有信息，比如，类的全路径，是否是延迟加载，是否是单例等等这些信息。
 
 在创建bean的时候，第一步是调用构造函数实例化bean。
 
