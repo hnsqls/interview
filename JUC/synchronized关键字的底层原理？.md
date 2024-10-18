@@ -76,7 +76,7 @@ Monitor内部具体的存储结构：
 
 具体的流程：
 
-- 代码进入synchorized代码块，先让lock（对象锁）关联的monitor，然后判断Owner是否有线程持有
+- 线程进入synchorized代码块，先让lock（对象锁）关联的monitor，然后判断Owner是否有线程持有
 - 如果没有线程持有，则让当前线程持有，表示该线程获取锁成功
 - 如果有线程持有，则让当前线程进入entryList进行阻塞，如果Owner持有的线程已经释放了锁，在EntryList中的线程去竞争锁的持有权（非公平）
 - 如果代码块中调用了wait()方法，则会进去WaitSet中进行等待。
