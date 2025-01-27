@@ -924,3 +924,182 @@ System.out.println(set); // 输出: [C++, Java, Python]
 
 
 
+## 集合并发修改问题
+
+在 Java 中，**集合并发问题** 是指多个线程同时访问或修改同一个集合时可能引发的数据不一致或程序异常的问题。由于 Java 的集合类（如 `ArrayList`、`HashMap`、`HashSet` 等）在默认情况下是 **非线程安全** 的，因此在多线程环境下直接使用这些集合可能会导致以下问题：
+
+
+
+1. **数据不一致**：
+   - 多个线程同时修改集合，可能导致数据丢失或错误。
+   - 例如：两个线程同时向 `ArrayList` 添加元素，可能导致某些元素被覆盖。
+
+2. **`ConcurrentModificationException`**：
+   - 当一个线程在遍历集合时，另一个线程修改了集合，可能会抛出 `ConcurrentModificationException`。
+
+3. **死锁**：
+   - 如果多个线程同时持有集合的锁并尝试获取其他资源的锁，可能会导致死锁。
+
+---
+
+### **1. 使用线程安全的集合**
+
+Java 提供了多种线程安全的集合类，可以直接替代非线程安全的集合类。
+
+**（1）`Collections.synchronizedXXX` 方法**
+
+- 通过 `Collections.synchronizedList`、`Collections.synchronizedSet`、`Collections.synchronizedMap` 等方法，可以将非线程安全的集合转换为线程安全的集合。
+
+- 示例：
+
+  ```java
+  List<String> list = Collections.synchronizedList(new ArrayList<>());
+  Set<String> set = Collections.synchronizedSet(new HashSet<>());
+  Map<String, String> map = Collections.synchronizedMap(new HashMap<>());
+  ```
+
+**（2）`java.util.concurrent` 包中的集合**
+
+- Java 的 `java.util.concurrent` 包提供了多种线程安全的集合类：
+
+  - **`CopyOnWriteArrayList`**：线程安全的 `ArrayList`，适用于读多写少的场景。
+  - **`CopyOnWriteArraySet`**：线程安全的 `HashSet`，适用于读多写少的场景。
+  - **`ConcurrentHashMap`**：线程安全的 `HashMap`，支持高并发读写。
+  - **`ConcurrentSkipListMap`**：线程安全的有序 `Map`。
+  - **`ConcurrentSkipListSet`**：线程安全的有序 `Set`。
+
+- 示例：
+
+  ```java
+  List<String> list = new CopyOnWriteArrayList<>();
+  Set<String> set = new CopyOnWriteArraySet<>();
+  Map<String, String> map = new ConcurrentHashMap<>();
+  ```
+
+---
+
+### **2. 使用锁机制**
+
+通过显式加锁（如 `synchronized` 或 `ReentrantLock`）来保证集合的线程安全。
+
+**（1）`synchronized` 关键字**
+
+- 使用 `synchronized` 关键字对集合的读写操作加锁。
+
+- 示例：
+
+  ```java
+  List<String> list = new ArrayList<>();
+  
+  public void addElement(String element) {
+      synchronized (list) {
+          list.add(element);
+      }
+  }
+  
+  public void removeElement(String element) {
+      synchronized (list) {
+          list.remove(element);
+      }
+  }
+  ```
+
+**（2）`ReentrantLock`**
+
+- 使用 `ReentrantLock` 实现更灵活的锁机制。
+
+- 示例：
+
+  ```java
+  List<String> list = new ArrayList<>();
+  ReentrantLock lock = new ReentrantLock();
+  
+  public void addElement(String element) {
+      lock.lock();
+      try {
+          list.add(element);
+      } finally {
+          lock.unlock();
+      }
+  }
+  
+  public void removeElement(String element) {
+      lock.lock();
+      try {
+          list.remove(element);
+      } finally {
+          lock.unlock();
+      }
+  }
+  ```
+
+---
+
+### **3. 使用原子类**
+
+对于简单的操作（如计数器），可以使用 `java.util.concurrent.atomic` 包中的原子类。
+
+**示例**
+
+```java
+AtomicInteger counter = new AtomicInteger(0);
+
+public void increment() {
+    counter.incrementAndGet();
+}
+
+public int getValue() {
+    return counter.get();
+}
+```
+
+---
+
+### **4. 避免在遍历时修改集合**
+
+在遍历集合时，避免直接修改集合。可以使用迭代器的 `remove` 方法，或者先收集需要修改的元素，遍历结束后再统一修改。
+
+**示例**
+
+```java
+List<String> list = new ArrayList<>();
+list.add("A");
+list.add("B");
+list.add("C");
+
+// 使用迭代器删除元素
+Iterator<String> iterator = list.iterator();
+while (iterator.hasNext()) {
+    String element = iterator.next();
+    if (element.equals("B")) {
+        iterator.remove(); // 安全删除元素
+    }
+}
+```
+
+---
+
+### **5. 使用不可变集合**
+
+如果集合的内容不需要修改，可以使用不可变集合（Immutable Collections），避免并发问题。
+
+**示例**
+
+```java
+List<String> list = List.of("A", "B", "C"); // 不可变集合
+Set<String> set = Set.of("A", "B", "C");   // 不可变集合
+Map<String, String> map = Map.of("key1", "value1", "key2", "value2"); // 不可变集合
+```
+
+---
+
+## **总结**
+
+- **非线程安全的集合**（如 `ArrayList`、`HashMap`）在多线程环境下会导致数据不一致或异常。
+- **解决方法**：
+  1. 使用线程安全的集合（如 `CopyOnWriteArrayList`、`ConcurrentHashMap`）。
+  2. 使用锁机制（如 `synchronized` 或 `ReentrantLock`）。
+  3. 使用原子类（如 `AtomicInteger`）。
+  4. 避免在遍历时修改集合。
+  5. 使用不可变集合。
+
