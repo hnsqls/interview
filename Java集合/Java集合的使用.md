@@ -1334,3 +1334,388 @@ Map<String, String> map = Map.of("key1", "value1", "key2", "value2"); // 不可�
 
 ---
 
+
+
+## Map
+
+Map是双列集合的接口，用于表示键值对（key-value）的映射关系，存key=value类型的数据，key是唯一的。
+
+应用场景：购物车{商品1 = 2件，商品2 = 1件，.....}。
+
+其常用接口 HashMap ,TreeMap LinkedHashMap，HashTable,ConcurrentHashMap。
+
+___
+
+### 常用API
+
+以下是 `Map` 接口中常用的方法：
+
+### **（1）添加和修改**
+
++ **`V put(K key, V value)`**：
+
+  + 将指定的键值对添加到 `Map` 中。如果键已存在，则替换旧值并返回旧值。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    System.out.println(map); // 输出: {apple=1, banana=2}
+    ```
+
++ **`void putAll(Map<? extends K, ? extends V> m)`**：
+
+  + 将指定 `Map` 中的所有键值对添加到当前 `Map` 中。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map1 = new HashMap<>();
+    map1.put("apple", 1);
+    map1.put("banana", 2);
+    
+    Map<String, Integer> map2 = new HashMap<>();
+    map2.putAll(map1);
+    System.out.println(map2); // 输出: {apple=1, banana=2}
+    ```
+
+------
+
+### **（2）删除**
+
++ **`V remove(Object key)`**：
+
+  + 删除指定键对应的键值对，并返回被删除的值。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    map.remove("apple");
+    System.out.println(map); // 输出: {banana=2}
+    ```
+
++ **`void clear()`**：
+
+  + 清空 `Map` 中的所有键值对。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    map.clear();
+    System.out.println(map); // 输出: {}
+    ```
+
+------
+
+### **（3）查询**
+
++ **`V get(Object key)`**：
+
+  + 返回指定键对应的值。如果键不存在，则返回 `null`。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    int value = map.get("apple");
+    System.out.println(value); // 输出: 1
+    ```
+
++ **`boolean containsKey(Object key)`**：
+
+  + 判断 `Map` 中是否包含指定的键。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    boolean contains = map.containsKey("apple");
+    System.out.println(contains); // 输出: true
+    ```
+
++ **`boolean containsValue(Object value)`**：
+
+  + 判断 `Map` 中是否包含指定的值。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    boolean contains = map.containsValue(1);
+    System.out.println(contains); // 输出: true
+    ```
+
+------
+
+### **（4）遍历**
+
++ **`Set<K> keySet()`**：
+
+  + 返回 `Map` 中所有键的集合。
+
+  + 示例：
+
+    java
+
+    复制
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    Set<String> keys = map.keySet();
+    for (String key : keys) {
+        System.out.println(key);
+    }
+    ```
+
++ **`Collection<V> values()`**：
+
+  + 返回 `Map` 中所有值的集合。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    Collection<Integer> values = map.values();
+    for (int value : values) {
+        System.out.println(value);
+    }
+    ```
+
++ **`Set<Map.Entry<K, V>> entrySet()`**：
+
+  + 返回 `Map` 中所有键值对的集合。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    Set<Map.Entry<String, Integer>> entries = map.entrySet();
+    for (Map.Entry<String, Integer> entry : entries) {
+        System.out.println(entry.getKey() + ": " + entry.getValue());
+    }
+    ```
+
+------
+
+### **（5）其他方法**
+
++ **`int size()`**：
+
+  + 返回 `Map` 中键值对的数量。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    map.put("apple", 1);
+    map.put("banana", 2);
+    int size = map.size();
+    System.out.println(size); // 输出: 2
+    ```
+
++ **`boolean isEmpty()`**：
+
+  + 判断 `Map` 是否为空。
+
+  + 示例：
+
+    ```java
+    Map<String, Integer> map = new HashMap<>();
+    boolean isEmpty = map.isEmpty();
+    System.out.println(isEmpty); // 输出: true
+    ```
+
+## HashMap
+
+特点：无序，不重复，无索引。
+
+## LinkedHashMap
+
+特点：有序，不重复，无索引。
+
+## TreeMap
+
+特点：按照大小默认升序排序，不重复，无索引。
+
+
+
+## Stream流
+
+**Stream 流** 是 Java 8 引入的一个强大的 API，用于处理集合数据。它提供了一种声明式的方式对集合进行操作，支持函数式编程风格，可以简化代码并提高可读性。
+
+- **声明式编程**：通过链式调用方法描述操作，而不是通过循环实现。
+- **惰性求值**：中间操作（如 `filter`、`map`）不会立即执行，只有在终端操作（如 `collect`、`forEach`）时才会触发计算。
+- **并行处理**：可以通过 `parallelStream` 实现并行处理，提高性能。
+
+Stream 的操作分为两类：
+- **中间操作（Intermediate Operations）**：
+  - 返回一个新的 Stream，可以链式调用。
+  - 例如：`filter`、`map`、`sorted` ,`distinct`。
+- **终端操作（Terminal Operations）**：
+  - 触发 Stream 的计算并返回结果。
+  - 例如：`collect`、`forEach`、`reduce`。
+
+---
+
+### **1. 创建 Stream**
+ **（1）从Collection集合创建**
+- 使用 `stream()` 方法：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  Stream<String> stream = list.stream();
+  ```
+
+  若不是Collection集合，是Map集合，需要先获取Set<entry>对象
+  
+- 使用 `parallelStream()` 方法创建并行流：
+  ```java
+  Stream<String> parallelStream = list.parallelStream();
+  ```
+
+ **（2）从数组创建**
+- 使用 `Arrays.stream()` 方法：
+  ```java
+  String[] array = {"apple", "banana", "cherry"};
+  Stream<String> stream = Arrays.stream(array);
+  ```
+
+ **（3）从值创建**
+- 使用 `Stream.of()` 方法：
+  ```java
+  Stream<String> stream = Stream.of("apple", "banana", "cherry");
+  ```
+
+---
+
+## **4. 常用中间操作**
+ **（1）`filter(Predicate<? super T> predicate)`**
+- 过滤元素，保留满足条件的元素。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  List<String> result = list.stream()
+                            .filter(s -> s.startsWith("a"))
+                            .collect(Collectors.toList());
+  System.out.println(result); // 输出: [apple]
+  ```
+
+ **（2）`map(Function<? super T, ? extends R> mapper)`**
+- 将元素转换为另一种类型。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  List<Integer> result = list.stream()
+                             .map(String::length)
+                             .collect(Collectors.toList());
+  System.out.println(result); // 输出: [5, 6, 6]
+  ```
+
+ **（3）`sorted()`**
+- 对元素进行排序。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("banana", "apple", "cherry");
+  List<String> result = list.stream()
+                            .sorted()
+                            .collect(Collectors.toList());
+  System.out.println(result); // 输出: [apple, banana, cherry]
+  ```
+  
+  tips: 默认升序，若是对自定义对象排序需要实现compareto接口。
+
+ **（4）`distinct()`**
+- 去重。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "apple");
+  List<String> result = list.stream()
+                            .distinct()
+                            .collect(Collectors.toList());
+  System.out.println(result); // 输出: [apple, banana]
+  ```
+  
+  tips： 若是对象，需要重写hashCode和equils方法。
+
+ **（5）`limit(long maxSize)`**
+- 限制元素数量。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  List<String> result = list.stream()
+                            .limit(2)
+                            .collect(Collectors.toList());
+  System.out.println(result); // 输出: [apple, banana]
+  ```
+
+---
+
+## **5. 常用终端操作**
+ **（1）`collect(Collector<? super T, A, R> collector)`**
+- 将 Stream 转换为集合或其他数据结构。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  List<String> result = list.stream()
+                            .collect(Collectors.toList());
+  System.out.println(result); // 输出: [apple, banana, cherry]
+  ```
+
+ **（2）`forEach(Consumer<? super T> action)`**
+- 对每个元素执行操作。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  list.stream()
+      .forEach(System.out::println);
+  ```
+
+ **（3）`reduce(BinaryOperator<T> accumulator)`**
+- 将元素归约为一个值。
+- 示例：
+  ```java
+  List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+  int sum = list.stream()
+                .reduce(0, Integer::sum);
+  System.out.println(sum); // 输出: 15
+  ```
+
+ **（4）`count()`**
+- 返回元素数量。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  long count = list.stream()
+                   .count();
+  System.out.println(count); // 输出: 3
+  ```
+
+ **（5）`anyMatch(Predicate<? super T> predicate)`**
+- 判断是否有元素满足条件。
+- 示例：
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  boolean hasApple = list.stream()
+                         .anyMatch(s -> s.equals("apple"));
+  System.out.println(hasApple); // 输出: true
+  ```
+
+
+
