@@ -1103,3 +1103,234 @@ Map<String, String> map = Map.of("key1", "value1", "key2", "value2"); // 不可�
   4. 避免在遍历时修改集合。
   5. 使用不可变集合。
 
+
+
+
+
+## Collections
+
+`Collections` 是 Java 集合框架中的一个工具类，提供了许多静态方法，用于操作或返回集合（如 `List`、`Set`、`Map` 等）。
+
+---
+
+### **1. 排序和查找**
+
+ **（1）`sort(List<T> list)`**
+
+- 对 `List` 进行自然顺序排序。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(3, 1, 4, 1, 5, 9);
+  Collections.sort(list);
+  System.out.println(list); // 输出: [1, 1, 3, 4, 5, 9]
+  ```
+
+ **（2）`sort(List<T> list, Comparator<? super T> c)`**
+
+- 使用自定义比较器对 `List` 进行排序。
+
+- 示例：
+
+  ```java
+  List<String> list = Arrays.asList("apple", "banana", "cherry");
+  Collections.sort(list, Comparator.reverseOrder());
+  System.out.println(list); // 输出: [cherry, banana, apple]
+  ```
+
+ **（3）`binarySearch(List<? extends Comparable<? super T>> list, T key)`**
+
+- 在已排序的 `List` 中使用二分查找法查找指定元素。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(1, 3, 5, 7, 9);
+  int index = Collections.binarySearch(list, 5);
+  System.out.println(index); // 输出: 2
+  ```
+
+---
+
+### **2. 反转和随机化**
+
+ **（1）`reverse(List<?> list)`**
+
+- 反转 `List` 中的元素顺序。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+  Collections.reverse(list);
+  System.out.println(list); // 输出: [5, 4, 3, 2, 1]
+  ```
+
+ **（2）`shuffle(List<?> list)`**
+
+- 随机打乱 `List` 中的元素顺序。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+  Collections.shuffle(list);
+  System.out.println(list); // 输出: [3, 1, 5, 2, 4]（随机顺序）
+  ```
+
+---
+
+### **3. 填充和替换**
+
+ **（1）`fill(List<? super T> list, T obj)`**
+
+- 用指定元素填充 `List`。
+
+- 示例：
+
+  ```java
+  List<String> list = Arrays.asList("a", "b", "c");
+  Collections.fill(list, "x");
+  System.out.println(list); // 输出: [x, x, x]
+  ```
+
+ **（2）`replaceAll(List<T> list, T oldVal, T newVal)`**
+
+- 将 `List` 中的所有 `oldVal` 替换为 `newVal`。
+
+- 示例：
+
+  ```java
+  List<String> list = Arrays.asList("a", "b", "a", "c");
+  Collections.replaceAll(list, "a", "x");
+  System.out.println(list); // 输出: [x, b, x, c]
+  ```
+
+---
+
+### **4. 最大值和最小值**
+
+ **（1）`max(Collection<? extends T> coll)`**
+
+- 返回集合中的最大元素（按自然顺序）。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(1, 3, 5, 7, 9);
+  int max = Collections.max(list);
+  System.out.println(max); // 输出: 9
+  ```
+
+ **（2）`min(Collection<? extends T> coll)`**
+
+- 返回集合中的最小元素（按自然顺序）。
+
+- 示例：
+
+  ```java
+  List<Integer> list = Arrays.asList(1, 3, 5, 7, 9);
+  int min = Collections.min(list);
+  System.out.println(min); // 输出: 1
+  ```
+
+---
+
+### **5. 同步集合**
+
+ **（1）`synchronizedList(List<T> list)`**
+
+- 返回一个线程安全的 `List`。
+
+- 示例：
+
+  ```java
+  List<String> list = Collections.synchronizedList(new ArrayList<>());
+  ```
+
+ **（2）`synchronizedSet(Set<T> s)`**
+
+- 返回一个线程安全的 `Set`。
+
+- 示例：
+
+  ```java
+  Set<String> set = Collections.synchronizedSet(new HashSet<>());
+  ```
+
+ **（3）`synchronizedMap(Map<K, V> m)`**
+
+- 返回一个线程安全的 `Map`。
+
+- 示例：
+
+  ```java
+  Map<String, String> map = Collections.synchronizedMap(new HashMap<>());
+  ```
+
+---
+
+### **6. 不可变集合**
+
+ **（1）`unmodifiableList(List<? extends T> list)`**
+
+- 返回一个不可修改的 `List`。
+
+- 示例：
+
+  ```java
+  List<String> list = Collections.unmodifiableList(Arrays.asList("a", "b", "c"));
+  ```
+
+ **（2）`unmodifiableSet(Set<? extends T> s)`**
+
+- 返回一个不可修改的 `Set`。
+
+- 示例：
+
+  ```java
+  Set<String> set = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("a", "b", "c")));
+  ```
+
+ **（3）`unmodifiableMap(Map<? extends K, ? extends V> m)`**
+
+- 返回一个不可修改的 `Map`。
+
+- 示例：
+
+  ```java
+  Map<String, String> map = Collections.unmodifiableMap(new HashMap<>());
+  ```
+
+---
+
+### **7. 其他常用方法**
+
+ **（1）`frequency(Collection<?> c, Object o)`**
+
+- 返回集合中指定元素的出现次数。
+
+- 示例：
+
+  ```java
+  List<String> list = Arrays.asList("a", "b", "a", "c");
+  int frequency = Collections.frequency(list, "a");
+  System.out.println(frequency); // 输出: 2
+  ```
+
+ **（2）`disjoint(Collection<?> c1, Collection<?> c2)`**
+
+- 判断两个集合是否没有交集。
+
+- 示例：
+
+  ```java
+  List<String> list1 = Arrays.asList("a", "b", "c");
+  List<String> list2 = Arrays.asList("d", "e", "f");
+  boolean isDisjoint = Collections.disjoint(list1, list2);
+  System.out.println(isDisjoint); // 输出: true
+  ```
+
+---
+
